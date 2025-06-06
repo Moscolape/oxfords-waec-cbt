@@ -3,7 +3,7 @@ import initializeAOS from "../utils/aos-init";
 import { logo, working } from "../constants/assets";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 type LoginData = {
@@ -27,7 +27,8 @@ const Login = () => {
     reset,
     formState: { errors },
   } = useForm<LoginData>();
-  const navigate = useNavigate();
+
+//   const navigate = useNavigate();
 
   useEffect(() => {
     initializeAOS();
@@ -44,7 +45,7 @@ const Login = () => {
       setIsSubmitting(true);
 
       const response = await fetch(
-        "https://dipf-backend.onrender.com/api/v1/auth/login",
+        "https://oxfords-waec-cbt-backend.onrender.com/api/v1/auth/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -67,13 +68,13 @@ const Login = () => {
         setMessageType("success");
         reset();
 
-        setTimeout(() => {
-          if (result.username === "deimperial") {
-            navigate("/2023-southeast-dipf-scholarships-for-js1-students");
-          } else {
-            navigate("/dashboard");
-          }
-        }, 2000);
+        // setTimeout(() => {
+        //   if (result.username === "deimperial") {
+        //     navigate("/2023-southeast-dipf-scholarships-for-js1-students");
+        //   } else {
+        //     navigate("/dashboard");
+        //   }
+        // }, 2000);
 
         return;
       }
