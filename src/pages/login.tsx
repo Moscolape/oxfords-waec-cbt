@@ -3,7 +3,7 @@ import initializeAOS from "../utils/aos-init";
 import { logo, working } from "../constants/assets";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 type LoginData = {
@@ -28,7 +28,7 @@ const Login = () => {
     formState: { errors },
   } = useForm<LoginData>();
 
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     initializeAOS();
@@ -68,13 +68,13 @@ const Login = () => {
         setMessageType("success");
         reset();
 
-        // setTimeout(() => {
-        //   if (result.username === "deimperial") {
-        //     navigate("/2023-southeast-dipf-scholarships-for-js1-students");
-        //   } else {
-        //     navigate("/dashboard");
-        //   }
-        // }, 2000);
+        setTimeout(() => {
+          if (result.username === "waeccbtcandidate1") {
+            navigate("/");
+          } else {
+            navigate("/dashboard");
+          }
+        }, 2000);
 
         return;
       }
@@ -115,7 +115,7 @@ const Login = () => {
                 className={`p-3 mb-4 rounded text-center ${
                   messageType === "error"
                     ? "bg-red-100 text-red-700"
-                    : "bg-green-100 text-green-700"
+                    : "bg-blue-100 text-blue-700"
                 }`}
               >
                 {formMessage}

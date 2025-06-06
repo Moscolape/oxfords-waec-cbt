@@ -5,8 +5,11 @@ import "./App.css";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "./components/protectedRoutes";
 
 const Login = lazy(() => import("./pages/login"));
+
+const Dashboard = lazy(() => import("./components/dashboard"));
 
 function App() {
   return (
@@ -21,6 +24,11 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
+
+          {/* Protect Admin Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
         </Routes>
       </Router>
     </Suspense>
