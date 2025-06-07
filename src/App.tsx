@@ -10,6 +10,11 @@ import ProtectedRoute from "./components/protectedRoutes";
 const Login = lazy(() => import("./pages/login"));
 
 const Dashboard = lazy(() => import("./components/dashboard"));
+const Scores = lazy(() => import("./components/scores"));
+const Test = lazy(() => import("./components/test"));
+
+const Mathematics = lazy(() => import("./components/subjects/mathematics"));
+const English = lazy(() => import("./components/subjects/english"));
 
 function App() {
   return (
@@ -28,6 +33,11 @@ function App() {
           {/* Protect Admin Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/scores" element={<Scores />} />
+
+            <Route path="/take-test" element={<Test />} />
+            <Route path="/take-test/mathematics" element={<Mathematics />} />
+            <Route path="/take-test/english" element={<English />} />
           </Route>
         </Routes>
       </Router>

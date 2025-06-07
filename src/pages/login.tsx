@@ -70,7 +70,7 @@ const Login = () => {
 
         setTimeout(() => {
           if (result.username === "waeccbtcandidate1") {
-            navigate("/");
+            navigate("/take-test");
           } else {
             navigate("/dashboard");
           }
@@ -92,8 +92,12 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center w-full h-[100vh] backdrop relative">
-      <img src={logo} alt="logo" className="absolute top-2 left-0 sm:w-40 sm:h-30 w-30 h-20" />
+    <div className="flex sm:flex-row flex-col justify-center items-center w-full h-[100vh] backdrop relative">
+      <img
+        src={logo}
+        alt="logo"
+        className="sm:absolute top-2 left-2 w-20 h-20"
+      />
       <div className="py-12 sm:px-6 sm:w-3/5 mx-auto font-Montserrat">
         <div className="bg-white p-6 w-full shadow rounded-xl flex justify-between sm:gap-6 animate-fadeDownFast">
           {/* Illustration */}

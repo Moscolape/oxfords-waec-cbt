@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { apply1, apply2, dash1, dash2 } from "../constants/assets";
+import { apply1, apply2, dash1, dash2, logo } from "../constants/assets";
 import { useCallback, useEffect, useState } from "react";
 
 type SidebarLink = {
@@ -20,7 +20,14 @@ const Sidebar = () => {
 
     const newLinks: SidebarLink[] =
       username === "waeccbtcandidate1"
-        ? []
+        ? [
+            {
+              text: "Test",
+              icon: apply1,
+              activeIcon: apply2,
+              urls: ["/take-test"],
+            },
+          ]
         : [
             {
               text: "Dashboard",
@@ -29,10 +36,10 @@ const Sidebar = () => {
               urls: ["/dashboard"],
             },
             {
-              text: "Subjects",
+              text: "Scores",
               icon: apply1,
               activeIcon: apply2,
-              urls: ["/nu"],
+              urls: ["/scores"],
             },
           ];
 
@@ -48,6 +55,9 @@ const Sidebar = () => {
 
   return (
     <div className="fixed z-40 h-full sidebar font-Montserrat w-1/5 bg-gray-900 text-white">
+      <div className="bg-white">
+        <img src={logo} alt="logo" className="w-20 h-20 py-2 mx-auto" />
+      </div>
       <div className="p-5">
         <ul className="space-y-2">
           {links.map((link) => {

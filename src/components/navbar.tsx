@@ -7,9 +7,9 @@ export default function TopNavbar() {
 
   return (
     <>
-      <div className="flex items-center justify-between w-full p-4 shadow">
-        <h1 className="text-2xl font-bold font-Montserrat text-[#dc117b]" data-aos="fade-left">
-          OXFORDS CBT PRACTICE FOR WAEC STUDENTS
+      <div className="flex items-center justify-between w-full h-20 p-4 shadow sidebar">
+        <h1 className="text-2xl font-bold font-Montserrat text-white" data-aos="fade-left">
+          OXFORDS CBT PRACTICE FOR PROSPECTIVE WAEC STUDENTS
         </h1>
 
         <div
