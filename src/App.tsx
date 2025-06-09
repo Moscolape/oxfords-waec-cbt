@@ -11,6 +11,8 @@ const Login = lazy(() => import("./pages/login"));
 
 const Dashboard = lazy(() => import("./components/dashboard"));
 const Scores = lazy(() => import("./components/scores"));
+const Panel = lazy(() => import("./components/panel"));
+const Questions = lazy(() => import("./components/allQuestions"));
 const Test = lazy(() => import("./components/test"));
 
 const Mathematics = lazy(() => import("./components/subjects/mathematics"));
@@ -21,7 +23,7 @@ function App() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center h-screen">
-          <div className="w-8 h-8 border-4 border-[#be202f] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-[#14346f] border-t-transparent rounded-full animate-spin"></div>
         </div>
       }
     >
@@ -33,6 +35,9 @@ function App() {
           {/* Protect Admin Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/panel" element={<Panel />} />
+            <Route path="/scores" element={<Scores />} />
+            <Route path="/questions" element={<Questions />} />
             <Route path="/scores" element={<Scores />} />
 
             <Route path="/take-test" element={<Test />} />

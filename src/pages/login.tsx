@@ -72,7 +72,7 @@ const Login = () => {
           if (result.username === "waeccbtcandidate1") {
             navigate("/take-test");
           } else {
-            navigate("/dashboard");
+            navigate("/panel");
           }
         }, 2000);
 

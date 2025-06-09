@@ -19,7 +19,7 @@ const Sidebar = () => {
     if (!username) return;
 
     const newLinks: SidebarLink[] =
-      username === "waeccbtcandidate1"
+      username !== "waeccbtcandidate1"
         ? [
             {
               text: "Test",
@@ -27,13 +27,19 @@ const Sidebar = () => {
               activeIcon: apply2,
               urls: ["/take-test"],
             },
+            {
+              text: "All Questions",
+              icon: apply1,
+              activeIcon: apply2,
+              urls: ["/questions"],
+            },
           ]
         : [
             {
-              text: "Dashboard",
+              text: "Admin Panel",
               icon: dash1,
               activeIcon: dash2,
-              urls: ["/dashboard"],
+              urls: ["/panel"],
             },
             {
               text: "Scores",

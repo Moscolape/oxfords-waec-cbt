@@ -1,13 +1,13 @@
 import DashboardWrapper from "./dashboardWrapper";
 
-const Dashboard = () => {
+const AllQuestions = () => {
   return (
     <DashboardWrapper>
       <div className="w-full m-auto font-Inter p-5">
-        <h1>DASHBOARD</h1>
+        <h1>ALL QUESTIONS</h1>
       </div>
     </DashboardWrapper>
   );
 };
 
-export default Dashboard;
+export default AllQuestions;

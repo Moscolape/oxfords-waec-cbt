@@ -56,17 +56,17 @@ const Test = () => {
             <option value="fishery">Fishery</option>
             <option value="civic">Civic Education</option>
           </select>
-          <h2 className="text-xl font-semibold mb-2">Pick A Type</h2>
+          <h2 className="text-xl font-semibold mb-2">Pick A Test</h2>
           <select
             className="w-full p-2 border border-gray-300 rounded mb-8 focus:outline-1"
             value={testType}
             onChange={(e) => setTestType(e.target.value)}
           >
-            <option value="">Choose test type</option>
-            <option value="A">Type A</option>
-            <option value="B">Type B</option>
-            <option value="C">Type C</option>
-            <option value="D">Type D</option>
+            <option value="">Choose test</option>
+            <option value="A">Test A</option>
+            <option value="B">Test B</option>
+            <option value="C">Test C</option>
+            <option value="D">Test D</option>
           </select>
           <button
             disabled={!isFormValid || routing}
