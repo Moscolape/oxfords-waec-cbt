@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./index.css";
 import "./App.css";
@@ -6,6 +6,7 @@ import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/protectedRoutes";
+import initializeAOS from "./utils/aos-init";
 
 const Login = lazy(() => import("./pages/login"));
 
@@ -19,6 +20,10 @@ const Mathematics = lazy(() => import("./components/subjects/mathematics"));
 const English = lazy(() => import("./components/subjects/english"));
 
 function App() {
+  useEffect(() => {
+    initializeAOS();
+  }, []);
+
   return (
     <Suspense
       fallback={
