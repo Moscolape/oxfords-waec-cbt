@@ -11,6 +11,7 @@ import initializeAOS from "./utils/aos-init";
 const Login = lazy(() => import("./pages/login"));
 
 const Dashboard = lazy(() => import("./components/dashboard"));
+const LoginDetails = lazy(() => import("./components/passwords"));
 const Scores = lazy(() => import("./components/scores"));
 const Panel = lazy(() => import("./components/panel"));
 const Questions = lazy(() => import("./components/allQuestions"));
@@ -40,6 +41,7 @@ function App() {
           {/* Protect Admin Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/passwords" element={<LoginDetails />} />
             <Route path="/panel" element={<Panel />} />
             <Route path="/scores" element={<Scores />} />
             <Route path="/questions" element={<Questions />} />

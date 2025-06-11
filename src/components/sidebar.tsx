@@ -1,5 +1,17 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { apply1, apply2, dash1, dash2, logo } from "../constants/assets";
+import {
+  apply1,
+  apply2,
+  dash1,
+  dash2,
+  logo,
+  passwords1,
+  passwords2,
+  questions1,
+  questions2,
+  scores1,
+  scores2,
+} from "../constants/assets";
 import { useCallback, useEffect, useState } from "react";
 
 type SidebarLink = {
@@ -28,6 +40,15 @@ const Sidebar = () => {
               urls: ["/take-test"],
             },
           ]
+        : role === "staff"
+        ? [
+            {
+              text: "Scores",
+              icon: scores1,
+              activeIcon: scores2,
+              urls: ["/scores"],
+            },
+          ]
         : [
             {
               text: "Admin Panel",
@@ -37,15 +58,21 @@ const Sidebar = () => {
             },
             {
               text: "All Questions",
-              icon: apply1,
-              activeIcon: apply2,
+              icon: questions1,
+              activeIcon: questions2,
               urls: ["/questions"],
             },
             {
               text: "Scores",
-              icon: apply1,
-              activeIcon: apply2,
+              icon: scores1,
+              activeIcon: scores2,
               urls: ["/scores"],
+            },
+            {
+              text: "Login Details",
+              icon: passwords1,
+              activeIcon: passwords2,
+              urls: ["/passwords"],
             },
           ];
 

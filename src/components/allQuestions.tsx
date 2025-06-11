@@ -50,7 +50,7 @@ const AllQuestions = () => {
         <h1 className="text-2xl font-semibold mb-4">All Questions</h1>
 
         {loading && (
-          <div className="flex justify-center items-center min-h-[200px]">
+          <div className="flex justify-center items-center min-h-[400px]">
             <ScaleLoader
               color="#dc117b"
               loading={loading}
@@ -81,7 +81,7 @@ const AllQuestions = () => {
                   <img
                     src={`${q.prompt}`}
                     alt="Question"
-                    className="w-full mb-2"
+                    className="w-[90%] mb-2"
                   />
                 </div>
               )}

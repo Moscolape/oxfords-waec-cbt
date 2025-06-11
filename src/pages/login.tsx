@@ -69,17 +69,17 @@ const Login = () => {
         reset();
 
         setTimeout(() => {
-          if (result.username === "waeccbtcandidate1") {
+          if (result.role === "student") {
             navigate("/take-test");
-          } else {
+          } else if (result.role === "principal") {
             navigate("/panel");
+          } else {
+            navigate("/scores");
           }
         }, 2000);
-
         return;
       }
 
-      // fallback for unexpected
       setFormMessage(result.message);
       setMessageType(response.ok ? "success" : "error");
     } catch (err) {
