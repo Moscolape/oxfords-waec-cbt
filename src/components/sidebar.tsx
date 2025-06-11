@@ -14,24 +14,18 @@ const Sidebar = () => {
   const [links, setLinks] = useState<SidebarLink[]>([]);
 
   useEffect(() => {
-    const username = localStorage.getItem("oxfusername");
+    const role = localStorage.getItem("oxfuserrole");
 
-    if (!username) return;
+    if (!role) return;
 
     const newLinks: SidebarLink[] =
-      username !== "waeccbtcandidate1"
+      role === "student"
         ? [
             {
               text: "Test",
               icon: apply1,
               activeIcon: apply2,
               urls: ["/take-test"],
-            },
-            {
-              text: "All Questions",
-              icon: apply1,
-              activeIcon: apply2,
-              urls: ["/questions"],
             },
           ]
         : [
@@ -42,17 +36,17 @@ const Sidebar = () => {
               urls: ["/panel"],
             },
             {
+              text: "All Questions",
+              icon: apply1,
+              activeIcon: apply2,
+              urls: ["/questions"],
+            },
+            {
               text: "Scores",
               icon: apply1,
               activeIcon: apply2,
               urls: ["/scores"],
             },
-            {
-              text: "Test",
-              icon: apply1,
-              activeIcon: apply2,
-              urls: ["/take-test"],
-            }
           ];
 
     setLinks(newLinks);

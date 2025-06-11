@@ -51,7 +51,7 @@ const AdminPanel = () => {
     questionImage: null,
     options: ["", "", "", ""],
     correctAnswer: "",
-    points: 1,
+    points: 2,
   });
 
   // Handlers for set question form
@@ -82,42 +82,78 @@ const AdminPanel = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const handleSubmitQuestion = (e: React.FormEvent) => {
+  const handleSubmitQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsUploading(true);
 
-    const formData = new FormData();
-    formData.append("subject", selectedSubject);
-    formData.append("questionType", questionType);
-    formData.append("options", JSON.stringify(form.options));
-    formData.append("correctAnswer", form.correctAnswer);
-    formData.append("points", String(form.points));
+    try {
+      const formData = new FormData();
+      formData.append("subject", selectedSubject);
+      formData.append("questionType", questionType);
+      formData.append("options", JSON.stringify(form.options));
+      formData.append("correctAnswer", form.correctAnswer);
+      formData.append("points", String(form.points));
 
-    if (questionType === "text") {
-      formData.append("question", form.question);
-    } else if (form.questionImage) {
-      formData.append("questionImage", form.questionImage);
-    }
+      if (questionType === "text") {
+        formData.append("question", form.question);
+      } else if (form.questionImage) {
+        formData.append("questionImage", form.questionImage);
+      }
 
-    setTimeout(() => {
-      console.log("Uploading question:", form);
+      const response = await fetch(
+        "https://oxfords-waec-cbt-backend.onrender.com/api/v1/questions/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-      alert("Question uploaded!");
+      const result = await response.json();
+
+      if (!response.ok) {
+        alert(result.message || "Failed to upload question.");
+        return;
+      }
+      alert(result.message || "Question uploaded successfully!");
+      reset();
+      navigate("/panel");
+    } catch (error) {
+      console.error("Upload Error:", error);
+      alert("Something went wrong while uploading the question.");
+    } finally {
       setIsUploading(false);
-    }, 2000);
-
-    navigate("/questions");
+    }
   };
 
-  const handleSubmitUser: SubmitHandler<SignUpData> = (data) => {
+  const handleSubmitUser: SubmitHandler<SignUpData> = async (data) => {
     setIsCreating(true);
 
-    setTimeout(() => {
-      console.log("Creating user:", data);
+    try {
+      const response = await fetch(
+        "https://oxfords-waec-cbt-backend.onrender.com/api/v1/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || result.message.toLowerCase().includes("error")) {
+        alert(result.message || "Failed to create user.");
+        return;
+      }
+
+      alert(result.message || "User created successfully!");
+      console.log(result);
       reset();
-      alert("User created!");
+    } catch (error) {
+      console.error("User creation error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
       setIsCreating(false);
-    }, 2000);
+    }
   };
 
   return (

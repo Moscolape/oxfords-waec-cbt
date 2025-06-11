@@ -19,7 +19,7 @@ const Login = () => {
     null
   );
 
-  const { login, getUsername } = useAuth();
+  const { login, getUserrole } = useAuth();
 
   const {
     register,
@@ -63,7 +63,7 @@ const Login = () => {
 
       if (result.message.toLowerCase().includes("successful")) {
         setFormMessage(result.message);
-        getUsername(result.username);
+        getUserrole(result.role);
         login(result.token);
         setMessageType("success");
         reset();

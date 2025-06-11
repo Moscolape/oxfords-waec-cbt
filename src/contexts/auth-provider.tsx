@@ -6,8 +6,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.getItem("oxfToken")
   );
 
-  const [username, setUsername] = useState<string | null>(
-    localStorage.getItem("oxfusername")
+  const [userrole, setUserrole] = useState<string | null>(
+    localStorage.getItem("oxfuserrole")
   );
 
   const login = (token: string) => {
@@ -15,19 +15,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("oxfToken", token);
   };
 
-  const getUsername = (uname: string) => {
-    setUsername(username);
-    localStorage.setItem("oxfusername", uname);
+  const getUserrole = (uname: string) => {
+    setUserrole(userrole);
+    localStorage.setItem("oxfuserrole", uname);
   };
 
   const logout = () => {
     setToken(null);
     localStorage.removeItem("oxfToken");
-    localStorage.removeItem("oxfusername");
+    localStorage.removeItem("oxfuserrole");
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout, getUsername, username }}>
+    <AuthContext.Provider value={{ token, login, logout, getUserrole, userrole }}>
       {children}
     </AuthContext.Provider>
   );
