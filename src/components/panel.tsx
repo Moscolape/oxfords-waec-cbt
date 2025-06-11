@@ -1,8 +1,9 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import DashboardWrapper from "./dashboardWrapper";
 import { ChangeEvent, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 interface FormState {
   question: string;
@@ -44,7 +45,6 @@ const AdminPanel = () => {
   });
 
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const [form, setForm] = useState<FormState>({
     question: "",
@@ -111,15 +111,14 @@ const AdminPanel = () => {
       const result = await response.json();
 
       if (!response.ok) {
-        alert(result.message || "Failed to upload question.");
+        toast.error(result.message);
         return;
       }
-      alert(result.message || "Question uploaded successfully!");
+      toast.success(result.message);
       reset();
-      navigate("/panel");
     } catch (error) {
       console.error("Upload Error:", error);
-      alert("Something went wrong while uploading the question.");
+      toast.error("Something went wrong while uploading the question.");
     } finally {
       setIsUploading(false);
     }
@@ -141,16 +140,15 @@ const AdminPanel = () => {
       const result = await response.json();
 
       if (!response.ok || result.message.toLowerCase().includes("error")) {
-        alert(result.message || "Failed to create user.");
+        toast.error(result.message);
         return;
       }
 
-      alert(result.message || "User created successfully!");
-      console.log(result);
+      toast.success(result.message);
       reset();
     } catch (error) {
       console.error("User creation error:", error);
-      alert("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setIsCreating(false);
     }
@@ -200,6 +198,16 @@ const AdminPanel = () => {
                     <option value="">-- Choose Subject --</option>
                     <option value="mathematics">Mathematics</option>
                     <option value="english">English</option>
+                    <option value="biology">Biology</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="physics">Physics</option>
+                    <option value="government">Government</option>
+                    <option value="crs">CRS</option>
+                    <option value="economics">Economics</option>
+                    <option value="literature">Literature-In-English</option>
+                    <option value="fmaths">Further Mathematics</option>
+                    <option value="fishery">Fishery</option>
+                    <option value="civic">Civic Education</option>
                   </select>
                 </div>
 

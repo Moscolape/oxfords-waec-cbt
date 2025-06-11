@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-toastify";
 
 type LoginData = {
   username: string;
@@ -14,10 +15,6 @@ type LoginData = {
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formMessage, setFormMessage] = useState<string | null>(null);
-  const [messageType, setMessageType] = useState<"error" | "success" | null>(
-    null
-  );
 
   const { login, getUserrole } = useAuth();
 
@@ -39,8 +36,6 @@ const Login = () => {
   };
 
   const onSubmit: SubmitHandler<LoginData> = async (data) => {
-    setFormMessage(null);
-
     try {
       setIsSubmitting(true);
 
@@ -56,16 +51,14 @@ const Login = () => {
       const result = await response.json();
 
       if (result.message.toLowerCase().includes("invalid")) {
-        setFormMessage(result.message);
-        setMessageType("error");
+        toast.error(result.message);
         return;
       }
 
       if (result.message.toLowerCase().includes("successful")) {
-        setFormMessage(result.message);
+        toast.success(result.message);
         getUserrole(result.role);
         login(result.token);
-        setMessageType("success");
         reset();
 
         setTimeout(() => {
@@ -76,16 +69,14 @@ const Login = () => {
           } else {
             navigate("/scores");
           }
-        }, 2000);
+        }, 3000);
         return;
       }
 
-      setFormMessage(result.message);
-      setMessageType(response.ok ? "success" : "error");
+      toast.info(result.message);
     } catch (err) {
       console.error("Login Error:", err);
-      setFormMessage("Login failed. Please try again.");
-      setMessageType("error");
+      toast.error("Login failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -114,17 +105,7 @@ const Login = () => {
             <p className="text-gray-400 mb-6 mt-2 sm:text-[1rem] text-sm">
               Welcome! Please enter your login details!!
             </p>
-            {formMessage && (
-              <div
-                className={`p-3 mb-4 rounded text-center ${
-                  messageType === "error"
-                    ? "bg-red-100 text-red-700"
-                    : "bg-blue-100 text-blue-700"
-                }`}
-              >
-                {formMessage}
-              </div>
-            )}
+
             <form
               className="flex flex-col gap-4"
               onSubmit={handleSubmit(onSubmit)}

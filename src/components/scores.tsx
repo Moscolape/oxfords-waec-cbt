@@ -1,53 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardWrapper from "./dashboardWrapper";
+import { ScaleLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
-const sampleScores = [
-  {
-    name: "Alice Johnson",
-    subject: "Mathematics",
-    score: 92,
-    date: "2025-06-01",
-    time: "30 mins",
-  },
-  {
-    name: "Bob Smith",
-    subject: "English",
-    score: 85,
-    date: "2025-06-02",
-    time: "25 mins",
-  },
-  {
-    name: "Charlie Lee",
-    subject: "Chemistry",
-    score: 78,
-    date: "2025-06-01",
-    time: "40 mins",
-  },
-  {
-    name: "Alice Johnson",
-    subject: "English",
-    score: 88,
-    date: "2025-06-03",
-    time: "22 mins",
-  },
-  {
-    name: "Bob Smith",
-    subject: "Mathematics",
-    score: 95,
-    date: "2025-06-04",
-    time: "28 mins",
-  },
-];
+type Score = {
+  name: string;
+  subject: string;
+  testType: string;
+  percentage: number;
+  submittedAt: string;
+};
 
 const Scores = () => {
+  const [scores, setScores] = useState<Score[]>([]);
   const [selectedSubject, setSelectedSubject] = useState("All");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const subjects = ["All", ...new Set(sampleScores.map((s) => s.subject))];
+  const fetchScores = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(
+        "https://oxfords-waec-cbt-backend.onrender.com/api/v1/test-submissions"
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch scores");
+      }
+
+      setScores(data.submissions || []);
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+      setError("Error fetching scores.");
+      toast.error("Error fetching scores.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchScores();
+  }, []);
+
+  const subjects = ["All", ...new Set(scores.map((s) => s.subject))];
 
   const filteredScores =
     selectedSubject === "All"
-      ? sampleScores
-      : sampleScores.filter((s) => s.subject === selectedSubject);
+      ? scores
+      : scores.filter((s) => s.subject === selectedSubject);
 
   return (
     <DashboardWrapper>
@@ -72,38 +77,44 @@ const Scores = () => {
           </select>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-300">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-4 py-2 text-left border">Name</th>
-                <th className="px-4 py-2 text-left border">Subject</th>
-                <th className="px-4 py-2 text-left border">Score</th>
-                <th className="px-4 py-2 text-left border">Date Taken</th>
-                <th className="px-4 py-2 text-left border">Time Taken</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredScores.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center min-h-[300px]">
+            <ScaleLoader color="#dc117b" />
+          </div>
+        ) : error ? (
+          <div className="text-red-600 text-center">{error}</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full border border-gray-300">
+              <thead className="bg-gray-100">
                 <tr>
-                  <td colSpan={5} className="text-center py-4">
-                    No results found.
-                  </td>
+                  <th className="px-4 py-2 text-left border">Name</th>
+                  <th className="px-4 py-2 text-left border">Subject</th>
+                  <th className="px-4 py-2 text-left border">Score</th>
+                  <th className="px-4 py-2 text-left border">Date Taken</th>
                 </tr>
-              ) : (
-                filteredScores.map((score, index) => (
-                  <tr key={index} className="border-t">
-                    <td className="px-4 py-2 border">{score.name}</td>
-                    <td className="px-4 py-2 border">{score.subject}</td>
-                    <td className="px-4 py-2 border">{score.score}</td>
-                    <td className="px-4 py-2 border">{score.date}</td>
-                    <td className="px-4 py-2 border">{score.time}</td>
+              </thead>
+              <tbody>
+                {filteredScores.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="text-center py-4">
+                      No results found.
+                    </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                ) : (
+                  filteredScores.map((score, index) => (
+                    <tr key={index} className="border-t">
+                      <td className="px-4 py-2 border">{score.name}</td>
+                      <td className="px-4 py-2 border">{score.subject.charAt(0).toUpperCase() + score.subject.slice(1)}</td>
+                      <td className="px-4 py-2 border">{score.percentage}%</td>
+                      <td className="px-4 py-2 border">{new Date(score.submittedAt).toLocaleString()}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </DashboardWrapper>
   );

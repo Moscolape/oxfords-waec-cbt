@@ -26,7 +26,7 @@ const Sidebar = () => {
   const [links, setLinks] = useState<SidebarLink[]>([]);
 
   useEffect(() => {
-    const role = localStorage.getItem("oxfuserrole");
+    const role = sessionStorage.getItem("oxfuserrole");
 
     if (!role) return;
 

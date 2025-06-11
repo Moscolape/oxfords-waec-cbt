@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const [userrole, setUserrole] = useState<string | null>(
-    localStorage.getItem("oxfuserrole")
+    sessionStorage.getItem("oxfuserrole")
   );
 
   const login = (token: string) => {
@@ -17,13 +17,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const getUserrole = (uname: string) => {
     setUserrole(userrole);
-    localStorage.setItem("oxfuserrole", uname);
+    sessionStorage.setItem("oxfuserrole", uname);
   };
 
   const logout = () => {
     setToken(null);
     localStorage.removeItem("oxfToken");
-    localStorage.removeItem("oxfuserrole");
+    sessionStorage.removeItem("oxfuserrole");
   };
 
   return (
