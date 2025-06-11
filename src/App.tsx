@@ -19,6 +19,16 @@ const Test = lazy(() => import("./components/test"));
 
 const Mathematics = lazy(() => import("./components/subjects/mathematics"));
 const English = lazy(() => import("./components/subjects/english"));
+const Physics = lazy(() => import("./components/subjects/physics"));
+const Chemistry = lazy(() => import("./components/subjects/chemistry"));
+const Biology = lazy(() => import("./components/subjects/biology"));
+const Government = lazy(() => import("./components/subjects/government"));
+const CRS = lazy(() => import("./components/subjects/crs"));
+const Literature = lazy(() => import("./components/subjects/literature"));
+const Civic = lazy(() => import("./components/subjects/civic"));
+const Economics = lazy(() => import("./components/subjects/economics"));
+const Fishery = lazy(() => import("./components/subjects/fishery"));
+const FMaths = lazy(() => import("./components/subjects/fmaths"));
 
 function App() {
   useEffect(() => {
@@ -50,6 +60,16 @@ function App() {
             <Route path="/take-test" element={<Test />} />
             <Route path="/take-test/mathematics" element={<Mathematics />} />
             <Route path="/take-test/english" element={<English />} />
+            <Route path="/take-test/physics" element={<Physics />} />
+            <Route path="/take-test/chemistry" element={<Chemistry />} />
+            <Route path="/take-test/biology" element={<Biology />} />
+            <Route path="/take-test/government" element={<Government />} />
+            <Route path="/take-test/crs" element={<CRS />} />
+            <Route path="/take-test/literature" element={<Literature />} />
+            <Route path="/take-test/civic" element={<Civic />} />
+            <Route path="/take-test/economics" element={<Economics />} />
+            <Route path="/take-test/fishery" element={<Fishery />} />
+            <Route path="/take-test/fmaths" element={<FMaths />} />
           </Route>
         </Routes>
       </Router>

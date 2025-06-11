@@ -1,13 +1,13 @@
-import DashboardWrapper from "./dashboardWrapper";
+import DashboardWrapper from "../dashboardWrapper";
 
-const Dashboard = () => {
+const Economics = () => {
   return (
     <DashboardWrapper>
       <div className="w-full m-auto font-Inter p-5 pt-25">
-        <h1>DASHBOARD</h1>
+        <h1>Economics</h1>
       </div>
     </DashboardWrapper>
   );
 };
 
-export default Dashboard;
+export default Economics;
