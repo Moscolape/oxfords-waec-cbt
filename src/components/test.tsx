@@ -27,7 +27,7 @@ const Test = () => {
   return (
     <DashboardWrapper>
       <div className="w-full m-auto font-Inter p-5 pt-25">
-        <div className="w-full mx-auto">
+        <div className="w-full mx-auto animate-fadeUp">
           <h2 className="text-xl font-semibold mb-2">Enter Your Name</h2>
           <input
             type="text"

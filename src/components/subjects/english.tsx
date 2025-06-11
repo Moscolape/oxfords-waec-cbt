@@ -186,7 +186,7 @@ const English = () => {
             {questions.length > 0 && (
               <div
                 key={questions[currentQuestionIndex]._id}
-                className="mb-6 mt-10"
+                className="mb-6 mt-10 animate-fadeUp"
               >
                 <div className="font-medium mb-3">
                   <span className="font-semibold">

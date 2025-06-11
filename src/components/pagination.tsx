@@ -32,13 +32,13 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className="flex justify-between items-center font-Inter bg-gray-50 p-3 rounded-lg my-5">
+    <div className="flex justify-between items-center font-Inter bg-gray-50 p-3 rounded-lg my-15">
       <span className="text-gray-4 text-h12">
         Showing{" "}
         {totalItems &&
           Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)}{" "}
         to {totalItems && Math.min(currentPage * itemsPerPage, totalItems)} of{" "}
-        {totalItems} applicants
+        {totalItems} entries
       </span>
       <div className="flex items-center">
         <img
@@ -57,7 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({
             {currentPage - 1}
           </span>
         )}
-        <span className="w-10 h-10 rounded-full bg-[#b58825] text-white mr-2 justify-center flex items-center">
+        <span className="w-10 h-10 rounded-full bg-[#dc117b] text-white mr-2 justify-center flex items-center">
           {currentPage}
         </span>
         {totalPages && currentPage < totalPages && (

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardWrapper from "./dashboardWrapper";
 import { ScaleLoader } from "react-spinners";
 import { toast } from "react-toastify";
+import Pagination from "./pagination";
 
 type Score = {
   name: string;
@@ -17,13 +18,17 @@ const Scores = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchScores = async () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState<number | null>(null);
+  const itemsPerPage = 10;
+
+  const fetchScores = async (page: number) => {
     setLoading(true);
     setError("");
 
     try {
       const response = await fetch(
-        "https://oxfords-waec-cbt-backend.onrender.com/api/v1/test-submissions"
+        `https://oxfords-waec-cbt-backend.onrender.com/api/v1/testSubmissions?page=${page}&limit=${itemsPerPage}`
       );
 
       const data = await response.json();
@@ -33,7 +38,7 @@ const Scores = () => {
       }
 
       setScores(data.submissions || []);
-      console.log(data);
+      setTotalItems(data.totalCount);
     } catch (err) {
       console.error(err);
       setError("Error fetching scores.");
@@ -44,8 +49,8 @@ const Scores = () => {
   };
 
   useEffect(() => {
-    fetchScores();
-  }, []);
+    fetchScores(currentPage);
+  }, [currentPage]);
 
   const subjects = ["All", ...new Set(scores.map((s) => s.subject))];
 
@@ -84,7 +89,7 @@ const Scores = () => {
         ) : error ? (
           <div className="text-red-600 text-center">{error}</div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto animate-fadeUp">
             <table className="min-w-full border border-gray-300">
               <thead className="bg-gray-100">
                 <tr>
@@ -105,15 +110,29 @@ const Scores = () => {
                   filteredScores.map((score, index) => (
                     <tr key={index} className="border-t">
                       <td className="px-4 py-2 border">{score.name}</td>
-                      <td className="px-4 py-2 border">{score.subject.charAt(0).toUpperCase() + score.subject.slice(1)}</td>
+                      <td className="px-4 py-2 border">
+                        {score.subject.charAt(0).toUpperCase() +
+                          score.subject.slice(1)}
+                      </td>
                       <td className="px-4 py-2 border">{score.percentage}%</td>
-                      <td className="px-4 py-2 border">{new Date(score.submittedAt).toLocaleString()}</td>
+                      <td className="px-4 py-2 border">
+                        {new Date(score.submittedAt).toLocaleString()}
+                      </td>
                     </tr>
                   ))
                 )}
               </tbody>
             </table>
           </div>
+        )}
+
+        {filteredScores.length > 0 && (
+          <Pagination
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
         )}
       </div>
     </DashboardWrapper>
