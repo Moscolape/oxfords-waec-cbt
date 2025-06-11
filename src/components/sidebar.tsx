@@ -47,6 +47,12 @@ const Sidebar = () => {
               activeIcon: apply2,
               urls: ["/scores"],
             },
+            {
+              text: "Test",
+              icon: apply1,
+              activeIcon: apply2,
+              urls: ["/take-test"],
+            }
           ];
 
     setLinks(newLinks);

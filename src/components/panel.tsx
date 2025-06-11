@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import DashboardWrapper from "./dashboardWrapper";
 import { ChangeEvent, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface FormState {
   question: string;
@@ -31,12 +31,17 @@ const AdminPanel = () => {
 
   const {
     register,
-    formState: { errors },
-  } = useForm<SignUpData>();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      username: "",
+      password: "",
+      role: "",
+    },
+  });
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -104,17 +109,12 @@ const AdminPanel = () => {
     navigate("/questions");
   };
 
-  const handleSubmitUser = (e: React.FormEvent) => {
+  const handleSubmitUser: SubmitHandler<SignUpData> = (data) => {
     setIsCreating(true);
-    e.preventDefault();
 
     setTimeout(() => {
-      console.log("Creating user:", { username, password, role });
-
-      setUsername("");
-      setPassword("");
-      setRole("");
-
+      console.log("Creating user:", data);
+      reset();
       alert("User created!");
       setIsCreating(false);
     }, 2000);
@@ -296,7 +296,10 @@ const AdminPanel = () => {
           {activeTab === "createUser" && (
             <div data-aos="fade-up">
               <h1 className="text-2xl font-bold mb-4">Create User</h1>
-              <form onSubmit={handleSubmitUser} className="space-y-4 max-w-md">
+              <form
+                onSubmit={handleSubmit(handleSubmitUser)}
+                className="space-y-4 max-w-md"
+              >
                 <div>
                   <label className="block mb-1">Username</label>
                   <input
@@ -343,9 +346,7 @@ const AdminPanel = () => {
                 <div>
                   <label className="block mb-1">Role</label>
                   <select
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    required
+                    {...register("role", { required: "Role is required" })}
                     className="w-full border p-2 rounded"
                   >
                     <option value="">-- Select Role --</option>
@@ -353,13 +354,18 @@ const AdminPanel = () => {
                     <option value="staff">Staff</option>
                     <option value="principal">Principal</option>
                   </select>
+                  {errors.role && (
+                    <p className="text-red-500 text-sm">
+                      {errors.role.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="sm:col-span-2 flex justify-center mt-4">
                   <button
                     type="submit"
-                    disabled={isCreating}
-                    className="bg-[#dc117b] text-white px-6 py-2 rounded hover:bg-[#ab0c5e] transition cursor-pointer flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed w-full"
+                    disabled={isCreating || !isValid}
+                    className="bg-[#dc117b] text-white px-6 py-2 rounded hover:bg-[#ab0c5e] transition cursor-pointer flex items-center justify-center gap-2 disabled:opacity-30 disabled:bg-gray-400 disabled:cursor-not-allowed w-full"
                   >
                     {isCreating && (
                       <svg
