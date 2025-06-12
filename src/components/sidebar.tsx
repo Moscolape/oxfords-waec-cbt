@@ -49,7 +49,8 @@ const Sidebar = () => {
               urls: ["/scores"],
             },
           ]
-        : [
+        : role === "admin"
+        ? [
             {
               text: "Admin Panel",
               icon: dash1,
@@ -62,6 +63,8 @@ const Sidebar = () => {
               activeIcon: questions2,
               urls: ["/questions"],
             },
+          ]
+        : [
             {
               text: "Scores",
               icon: scores1,

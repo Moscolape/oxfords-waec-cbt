@@ -15,9 +15,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("oxfToken", token);
   };
 
-  const getUserrole = (uname: string) => {
-    setUserrole(userrole);
-    sessionStorage.setItem("oxfuserrole", uname);
+  const setUserRole = (role: string) => {
+    setUserrole(role);
+    sessionStorage.setItem("oxfuserrole", role);
   };
 
   const logout = () => {
@@ -27,7 +27,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout, getUserrole, userrole }}>
+    <AuthContext.Provider
+      value={{ token, login, logout, setUserRole, userrole }}
+    >
       {children}
     </AuthContext.Provider>
   );

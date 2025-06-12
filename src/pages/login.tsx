@@ -16,7 +16,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { login, getUserrole } = useAuth();
+  const { login, setUserRole } = useAuth();
 
   const {
     register,
@@ -57,14 +57,14 @@ const Login = () => {
 
       if (result.message.toLowerCase().includes("successful")) {
         toast.success(result.message);
-        getUserrole(result.role);
+        setUserRole(result.role);
         login(result.token);
         reset();
 
         setTimeout(() => {
           if (result.role === "student") {
             navigate("/take-test");
-          } else if (result.role === "principal") {
+          } else if (result.role === "admin") {
             navigate("/panel");
           } else {
             navigate("/scores");

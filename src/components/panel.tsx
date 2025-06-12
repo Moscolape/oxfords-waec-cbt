@@ -413,6 +413,7 @@ const AdminPanel = () => {
                     <option value="student">Student</option>
                     <option value="staff">Staff</option>
                     <option value="principal">Principal</option>
+                    <option value="admin">Admin</option>
                   </select>
                   {errors.role && (
                     <p className="text-red-500 text-sm">
