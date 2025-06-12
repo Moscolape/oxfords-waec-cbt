@@ -20,7 +20,7 @@ interface SignUpData {
 }
 
 const AdminPanel = () => {
-  const [selectedSubject, setSelectedSubject] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("mathematics");
   const [questionType, setQuestionType] = useState<"text" | "image">("text");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"setQuestions" | "createUser">(
@@ -114,8 +114,24 @@ const AdminPanel = () => {
         toast.error(result.message);
         return;
       }
+
       toast.success(result.message);
-      reset();
+
+      setForm({
+        question: "",
+        questionImage: null,
+        options: ["", "", "", ""],
+        correctAnswer: "",
+        points: 2,
+      });
+      setImagePreview(null);
+
+      const fileInput = document.getElementById(
+        "questionImageInput"
+      ) as HTMLInputElement | null;
+      if (fileInput) {
+        fileInput.value = "";
+      }
     } catch (error) {
       console.error("Upload Error:", error);
       toast.error("Something went wrong while uploading the question.");
@@ -195,7 +211,6 @@ const AdminPanel = () => {
                     value={selectedSubject}
                     onChange={(e) => setSelectedSubject(e.target.value)}
                   >
-                    <option value="">-- Choose Subject --</option>
                     <option value="mathematics">Mathematics</option>
                     <option value="english">English</option>
                     <option value="biology">Biology</option>
@@ -226,6 +241,7 @@ const AdminPanel = () => {
                     </label>
                     <label>
                       <input
+                        id="questionImageInput"
                         type="radio"
                         name="questionType"
                         value="image"

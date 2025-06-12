@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardWrapper from "./dashboardWrapper";
 import { useNavigate } from "react-router-dom";
 
@@ -20,6 +20,12 @@ const Test = () => {
       navigate(`/take-test/${selectedSubject}`);
     }, 3000);
   };
+
+  useEffect(() => {
+    localStorage.removeItem("candidateName");
+    localStorage.removeItem("selectedSubject");
+    localStorage.removeItem("testType");
+  }, []);
 
   const isFormValid =
     name.trim() !== "" && selectedSubject !== "" && testType !== "";

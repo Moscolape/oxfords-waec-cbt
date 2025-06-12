@@ -47,6 +47,12 @@ const Mathematics = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!name) {
+      navigate("/take-test");
+    }
+  }, [name, navigate]);
+
   const handleSubmit = useCallback(async () => {
     if (hasSubmitted) return;
 
@@ -78,6 +84,7 @@ const Mathematics = () => {
       setScoreData({ score: data.score });
       localStorage.removeItem("mathQuizAnswers");
       localStorage.removeItem("mathHasSubmitted");
+      localStorage.removeItem("mathQuizStartTime");
     } catch (error) {
       console.error("Submission error:", error);
       setHasSubmitted(false);
@@ -114,7 +121,17 @@ const Mathematics = () => {
   }, [fetchQuestions]);
 
   useEffect(() => {
-    const endTime = Date.now() + QUIZ_DURATION;
+    const storedStartTime = localStorage.getItem("mathQuizStartTime");
+    let startTime: number;
+
+    if (storedStartTime) {
+      startTime = parseInt(storedStartTime, 10);
+    } else {
+      startTime = Date.now();
+      localStorage.setItem("mathQuizStartTime", startTime.toString());
+    }
+
+    const endTime = startTime + QUIZ_DURATION;
 
     const timer = setInterval(() => {
       const timeLeft = endTime - Date.now();
@@ -131,6 +148,8 @@ const Mathematics = () => {
         } else {
           alert("Time's up. No answers submitted.");
         }
+
+        localStorage.removeItem("mathQuizStartTime");
       }
     }, 1000);
 
@@ -161,10 +180,11 @@ const Mathematics = () => {
 
   return (
     <DashboardWrapper>
-      <div className="w-full max-w-3xl mx-auto font-Inter p-5 pt-25">
-        <h1 className="text-2xl font-bold mb-4 text-center">
-          Mathematics Test
-        </h1>
+      <div className="w-full max-w-6xl mx-auto font-Inter p-5 pt-25">
+        <div className="flex justify-between items-center mb-5">
+          <h1 className="text-2xl font-bold">Mathematics Test</h1>
+          <h1 className="text-2xl font-bold">Test Type: {testType}</h1>
+        </div>
         <p className="text-xl mb-2">
           ⏳ Time Left -{" "}
           <span className="font-bold">{formatTime(quizTimeLeft)}</span>
@@ -185,11 +205,11 @@ const Mathematics = () => {
             {error}
           </div>
         ) : (
-          <>
+          <div className="animate-fadeUp">
             {questions.length > 0 && (
               <div
                 key={questions[currentQuestionIndex]._id}
-                className="mb-6 mt-10 animate-fadeUp"
+                className="mb-6 mt-10"
               >
                 <div className="font-medium mb-3">
                   <span className="font-semibold">
@@ -199,7 +219,7 @@ const Mathematics = () => {
                     <img
                       src={questions[currentQuestionIndex].prompt}
                       alt={`Question ${currentQuestionIndex + 1}`}
-                      className="mt-2 max-w-full h-auto rounded-md border"
+                      className="mt-2 max-w-full h-auto"
                     />
                   ) : (
                     <span>{questions[currentQuestionIndex].prompt}</span>
@@ -293,7 +313,7 @@ const Mathematics = () => {
                 </button>
               )}
             </div>
-          </>
+          </div>
         )}
 
         {scoreData && (

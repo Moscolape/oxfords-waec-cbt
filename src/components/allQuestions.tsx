@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ScaleLoader } from "react-spinners";
 import DashboardWrapper from "./dashboardWrapper";
 import Pagination from "./pagination";
+import { toast } from "react-toastify";
 
 interface Question {
   _id: string;
@@ -16,8 +17,18 @@ interface Question {
 }
 
 const subjects = [
-  "mathematics", "english", "biology", "chemistry", "physics",
-  "government", "crs", "economics", "literature", "fmaths", "fishery", "civic"
+  "mathematics",
+  "english",
+  "biology",
+  "chemistry",
+  "physics",
+  "government",
+  "crs",
+  "economics",
+  "literature",
+  "fmaths",
+  "fishery",
+  "civic",
 ];
 
 const AllQuestions = () => {
@@ -45,13 +56,14 @@ const AllQuestions = () => {
     } catch (err) {
       console.error("Fetch error:", err);
       setError("Error fetching questions");
+      toast.error("Error fetching questions");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    setCurrentPage(1); // reset to page 1 when subject changes
+    setCurrentPage(1);
   }, [selectedSubject]);
 
   useEffect(() => {
@@ -67,7 +79,8 @@ const AllQuestions = () => {
       <div className="w-full m-auto font-Inter p-5 pt-25">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-semibold">
-            {selectedSubject.charAt(0).toUpperCase() + selectedSubject.slice(1)} Questions
+            {selectedSubject.charAt(0).toUpperCase() + selectedSubject.slice(1)}{" "}
+            Questions
           </h1>
           <div>
             <span>Change subject:</span>
@@ -97,56 +110,66 @@ const AllQuestions = () => {
           </div>
         )}
 
-        {error && <p className="text-red-500">Error: {error}</p>}
+        {error && <p className="text-red-500">{error}</p>}
 
         {!loading && (
           <>
-            <div className="grid gap-6 animate-fadeUp">
-              {questions.map((q, index) => (
-                <div key={q._id} className="rounded-2xl p-5 shadow-sm bg-white">
-                  {q.promptType === "text" ? (
-                    <p className="text-lg font-medium mb-2">
-                      {(currentPage - 1) * itemsPerPage + index + 1}. {q.prompt}
-                    </p>
-                  ) : (
-                    <div className="flex">
-                      <span className="block mr-2">
-                        {(currentPage - 1) * itemsPerPage + index + 1}.
-                      </span>
-                      <img
-                        src={q.prompt}
-                        alt="Question"
-                        className="w-[90%] mb-2"
-                      />
+            {questions.length > 0 ? (
+              <div className="grid gap-6 animate-fadeUp">
+                {questions.map((q, index) => (
+                  <div
+                    key={q._id}
+                    className="rounded-2xl p-5 shadow-sm bg-white"
+                  >
+                    {q.promptType === "text" ? (
+                      <p className="text-lg font-medium mb-2">
+                        {(currentPage - 1) * itemsPerPage + index + 1}.{" "}
+                        {q.prompt}
+                      </p>
+                    ) : (
+                      <div className="flex">
+                        <span className="block mr-2">
+                          {(currentPage - 1) * itemsPerPage + index + 1}.
+                        </span>
+                        <img
+                          src={q.prompt}
+                          alt="Question"
+                          className="w-[90%] mb-2"
+                        />
+                      </div>
+                    )}
+
+                    <div className="mb-2">
+                      <p className="font-medium">Options:</p>
+                      <ul className="list-disc list-inside ml-4 text-sm text-gray-700">
+                        {q.options.map((opt, idx) => (
+                          <li key={idx}>{opt}</li>
+                        ))}
+                      </ul>
                     </div>
-                  )}
 
-                  <div className="mb-2">
-                    <p className="font-medium">Options:</p>
-                    <ul className="list-disc list-inside ml-4 text-sm text-gray-700">
-                      {q.options.map((opt, idx) => (
-                        <li key={idx}>{opt}</li>
-                      ))}
-                    </ul>
+                    <p className="text-sm text-green-600">
+                      <span className="font-semibold">Correct Answer:</span>{" "}
+                      {q.correctAnswer}
+                    </p>
+                    <p className="text-sm text-blue-600">
+                      <span className="font-semibold">Points:</span> {q.points}
+                    </p>
                   </div>
+                ))}
+              </div>
+            ) : (
+              <span className="text-red-500 flex justify-center items-center min-h-[400px] text-xl">No questions!</span>
+            )}
 
-                  <p className="text-sm text-green-600">
-                    <span className="font-medium">Correct Answer:</span>{" "}
-                    {q.correctAnswer}
-                  </p>
-                  <p className="text-sm text-blue-600">
-                    <span className="font-medium">Points:</span> {q.points}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <Pagination
-              totalItems={totalItems}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={setCurrentPage}
-            />
+            {questions.length !== 0 && (
+              <Pagination
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+              />
+            )}
           </>
         )}
       </div>

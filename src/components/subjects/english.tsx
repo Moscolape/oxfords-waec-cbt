@@ -47,6 +47,12 @@ const English = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!name) {
+      navigate("/take-test");
+    }
+  }, [name, navigate]);
+
   const handleSubmit = useCallback(async () => {
     if (hasSubmitted) return;
 
@@ -77,6 +83,8 @@ const English = () => {
 
       setScoreData({ score: data.score });
       localStorage.removeItem("englishQuizAnswers");
+      localStorage.removeItem("englishHasSubmitted");
+      localStorage.removeItem("englishQuizStartTime");
     } catch (error) {
       console.error("Submission error:", error);
       setHasSubmitted(false);
@@ -113,7 +121,17 @@ const English = () => {
   }, [fetchQuestions]);
 
   useEffect(() => {
-    const endTime = Date.now() + QUIZ_DURATION;
+    const storedStartTime = localStorage.getItem("englishQuizStartTime");
+    let startTime: number;
+
+    if (storedStartTime) {
+      startTime = parseInt(storedStartTime, 10);
+    } else {
+      startTime = Date.now();
+      localStorage.setItem("englishQuizStartTime", startTime.toString());
+    }
+
+    const endTime = startTime + QUIZ_DURATION;
 
     const timer = setInterval(() => {
       const timeLeft = endTime - Date.now();
@@ -130,6 +148,8 @@ const English = () => {
         } else {
           alert("Time's up. No answers submitted.");
         }
+
+        localStorage.removeItem("englishQuizStartTime");
       }
     }, 1000);
 
@@ -161,12 +181,14 @@ const English = () => {
   return (
     <DashboardWrapper>
       <div className="w-full max-w-3xl mx-auto font-Inter p-5 pt-25">
-        <h1 className="text-2xl font-bold mb-4 text-center">English Test</h1>
+        <div className="flex justify-between items-center mb-5">
+          <h1 className="text-2xl font-bold">English Language Test</h1>
+          <h1 className="text-2xl font-bold">Test Type: {testType}</h1>
+        </div>{" "}
         <p className="text-xl mb-2">
           ⏳ Time Left -{" "}
           <span className="font-bold">{formatTime(quizTimeLeft)}</span>
         </p>
-
         {loading ? (
           <div className="flex justify-center items-center min-h-[400px]">
             <ScaleLoader
@@ -292,7 +314,6 @@ const English = () => {
             </div>
           </>
         )}
-
         {scoreData && (
           <div className="fixed inset-0 bg-[#00000080] bg-opacity-60 flex items-center justify-center z-50">
             <div className="bg-white w-[90%] max-w-md rounded-lg p-8 text-center relative">

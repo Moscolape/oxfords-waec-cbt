@@ -14,7 +14,7 @@ type Score = {
 
 const Scores = () => {
   const [scores, setScores] = useState<Score[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState("All");
+  const [selectedSubject, setSelectedSubject] = useState("mathematics");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -22,13 +22,16 @@ const Scores = () => {
   const [totalItems, setTotalItems] = useState<number | null>(null);
   const itemsPerPage = 10;
 
-  const fetchScores = async (page: number) => {
+  const fetchScores = async (page: number, subject: string) => {
     setLoading(true);
     setError("");
 
+    const subjectQuery =
+      subject === "All" ? "" : `&subject=${encodeURIComponent(subject)}`;
+
     try {
       const response = await fetch(
-        `https://oxfords-waec-cbt-backend.onrender.com/api/v1/testSubmissions?page=${page}&limit=${itemsPerPage}`
+        `https://oxfords-waec-cbt-backend.onrender.com/api/v1/testSubmissions?page=${page}&limit=${itemsPerPage}${subjectQuery}`
       );
 
       const data = await response.json();
@@ -38,7 +41,7 @@ const Scores = () => {
       }
 
       setScores(data.submissions || []);
-      setTotalItems(data.totalCount);
+      setTotalItems(data.totalCount); // Backend must return total count for filtered results
     } catch (err) {
       console.error(err);
       setError("Error fetching scores.");
@@ -49,10 +52,13 @@ const Scores = () => {
   };
 
   useEffect(() => {
-    fetchScores(currentPage);
-  }, [currentPage]);
+    fetchScores(currentPage, selectedSubject);
+  }, [currentPage, selectedSubject]);
 
-  const subjects = ["All", ...new Set(scores.map((s) => s.subject))];
+  const subjects = [
+  "mathematics", "english", "biology", "chemistry", "physics",
+  "government", "crs", "economics", "literature", "fmaths", "fishery", "civic"
+];
 
   const filteredScores =
     selectedSubject === "All"
@@ -71,7 +77,10 @@ const Scores = () => {
           <select
             id="subject"
             value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
+            onChange={(e) => {
+              setSelectedSubject(e.target.value);
+              setCurrentPage(1);
+            }}
             className="p-2 border rounded"
           >
             {subjects.map((subject, index) => (
@@ -95,8 +104,9 @@ const Scores = () => {
                 <tr>
                   <th className="px-4 py-2 text-left border">Name</th>
                   <th className="px-4 py-2 text-left border">Subject</th>
+                  <th className="px-4 py-2 text-left border">Test Type</th>
                   <th className="px-4 py-2 text-left border">Score</th>
-                  <th className="px-4 py-2 text-left border">Date Taken</th>
+                  <th className="px-4 py-2 text-left border">Submitted At</th>
                 </tr>
               </thead>
               <tbody>
@@ -114,6 +124,7 @@ const Scores = () => {
                         {score.subject.charAt(0).toUpperCase() +
                           score.subject.slice(1)}
                       </td>
+                      <td className="px-4 py-2 border">{score.testType}</td>
                       <td className="px-4 py-2 border">{score.percentage}%</td>
                       <td className="px-4 py-2 border">
                         {new Date(score.submittedAt).toLocaleString()}
