@@ -19,7 +19,7 @@ const allowedRoutesPerRole: Record<string, string[]> = {
   ],
   staff: ["/scores"],
   admin: ["/panel", "/questions"],
-  principal: ["/scores", "/passwords"],
+  principal: ["/panel", "/scores", "/passwords"],
 };
 
 const ProtectedRoute = () => {

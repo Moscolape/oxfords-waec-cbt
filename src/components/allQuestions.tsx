@@ -38,7 +38,7 @@ const AllQuestions = () => {
   const [selectedSubject, setSelectedSubject] = useState("mathematics");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState<number | null>(null);
-  const itemsPerPage = 10;
+  const itemsPerPage = 50;
 
   const fetchQuestions = async (subject: string, page: number) => {
     setLoading(true);

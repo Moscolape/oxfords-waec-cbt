@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   apply1,
   apply2,
@@ -52,7 +52,7 @@ const Sidebar = () => {
         : role === "admin"
         ? [
             {
-              text: "Admin Panel",
+              text: "Configuration",
               icon: dash1,
               activeIcon: dash2,
               urls: ["/panel"],
@@ -65,6 +65,12 @@ const Sidebar = () => {
             },
           ]
         : [
+            {
+              text: "Configuration",
+              icon: dash1,
+              activeIcon: dash2,
+              urls: ["/panel"],
+            },
             {
               text: "Scores",
               icon: scores1,
@@ -99,8 +105,8 @@ const Sidebar = () => {
           {links.map((link) => {
             return (
               <li key={link.text}>
-                <NavLink
-                  to={link.urls[0]}
+                <a
+                  href={link.urls[0]}
                   className={`flex items-center space-x-3 p-2 rounded-lg transition duration-200 ${
                     isActive(...link.urls)
                       ? "bg-white text-gray-900 font-semibold"
@@ -113,7 +119,7 @@ const Sidebar = () => {
                     className="w-5 h-5"
                   />
                   <span>{link.text}</span>
-                </NavLink>
+                </a>
               </li>
             );
           })}

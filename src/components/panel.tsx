@@ -23,9 +23,6 @@ const AdminPanel = () => {
   const [selectedSubject, setSelectedSubject] = useState("mathematics");
   const [questionType, setQuestionType] = useState<"text" | "image">("text");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"setQuestions" | "createUser">(
-    "setQuestions"
-  );
   const [showPassword, setShowPassword] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -170,32 +167,32 @@ const AdminPanel = () => {
     }
   };
 
+  const role = sessionStorage.getItem("oxfuserrole");
+
   return (
     <DashboardWrapper>
       <div className="flex w-full m-auto font-Inter p-5 pt-25 max-w-6xl">
         {/* Sidebar tabs */}
         <div className="flex flex-col w-48 border-r border-gray-300 pr-4">
-          <button
-            className={`text-left px-4 py-2 mb-2 rounded cursor-pointer ${
-              activeTab === "setQuestions" ? "text-[#dc117b] font-semibold" : ""
-            }`}
-            onClick={() => setActiveTab("setQuestions")}
-          >
-            Set Questions
-          </button>
-          <button
-            className={`text-left px-4 py-2 rounded cursor-pointer ${
-              activeTab === "createUser" ? "text-[#dc117b] font-semibold" : ""
-            }`}
-            onClick={() => setActiveTab("createUser")}
-          >
-            Create User
-          </button>
+          {role === "admin" && (
+            <button
+              className={`text-left px-4 py-2 mb-2 rounded cursor-pointer text-[#dc117b] font-semibold`}
+            >
+              Set Questions
+            </button>
+          )}
+          {role === "principal" && (
+            <button
+              className={`text-left px-4 py-2 rounded cursor-pointer text-[#dc117b] font-semibold`}
+            >
+              Create User
+            </button>
+          )}
         </div>
 
         {/* Content */}
         <div className="flex-1 pl-6">
-          {activeTab === "setQuestions" && (
+          {role === "admin" && (
             <div data-aos="fade-up">
               <h1 className="text-2xl font-bold mb-4">
                 {id ? "Edit" : "Set"} Question
@@ -353,7 +350,7 @@ const AdminPanel = () => {
             </div>
           )}
 
-          {activeTab === "createUser" && (
+          {role === "principal" && (
             <div data-aos="fade-up">
               <h1 className="text-2xl font-bold mb-4">Create User</h1>
               <form

@@ -64,10 +64,10 @@ const Login = () => {
         setTimeout(() => {
           if (result.role === "student") {
             navigate("/take-test");
-          } else if (result.role === "admin") {
-            navigate("/panel");
-          } else {
+          } else if (result.role === "staff") {
             navigate("/scores");
+          } else {
+            navigate("/panel");
           }
         }, 3000);
         return;
