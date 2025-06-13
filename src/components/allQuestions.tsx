@@ -74,6 +74,36 @@ const AllQuestions = () => {
     setSelectedSubject(e.target.value);
   };
 
+  function renderPrompt(prompt: string) {
+    const regex = /_([a-zA-Z]+)_/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(prompt)) !== null) {
+      const [fullMatch, group] = match;
+      const start = match.index;
+
+      if (start > lastIndex) {
+        parts.push(prompt.slice(lastIndex, start));
+      }
+
+      parts.push(
+        <span key={start} className="underline">
+          {group}
+        </span>
+      );
+
+      lastIndex = start + fullMatch.length;
+    }
+
+    if (lastIndex < prompt.length) {
+      parts.push(prompt.slice(lastIndex));
+    }
+
+    return parts;
+  }
+
   return (
     <DashboardWrapper>
       <div className="w-full m-auto font-Inter p-5 pt-25">
@@ -115,16 +145,17 @@ const AllQuestions = () => {
         {!loading && (
           <>
             {questions.length > 0 ? (
-              <div className="grid gap-6 animate-fadeUp">
+              <div className="grid gap-6">
                 {questions.map((q, index) => (
                   <div
                     key={q._id}
                     className="rounded-2xl p-5 shadow-sm bg-white"
+                    data-aos="fade-up"
                   >
                     {q.promptType === "text" ? (
                       <p className="text-lg font-medium mb-4">
                         {(currentPage - 1) * itemsPerPage + index + 1}.{" "}
-                        {q.prompt}
+                        {renderPrompt(q.prompt)}
                       </p>
                     ) : (
                       <div className="flex">
@@ -156,7 +187,9 @@ const AllQuestions = () => {
                     </div>
 
                     <p className="text-sm font-semibold">
-                      <span className="font-medium text-green-600">Correct Answer:</span>{" "}
+                      <span className="font-medium text-green-600">
+                        Correct Answer:
+                      </span>{" "}
                       {q.correctAnswer}
                     </p>
                     <p className="text-sm text-blue-600">

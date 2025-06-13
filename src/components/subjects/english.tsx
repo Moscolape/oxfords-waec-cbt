@@ -191,6 +191,36 @@ const English = () => {
     navigate("/take-test");
   };
 
+  function renderPrompt(prompt: string) {
+    const regex = /_([a-zA-Z]+)_/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(prompt)) !== null) {
+      const [fullMatch, group] = match;
+      const start = match.index;
+
+      if (start > lastIndex) {
+        parts.push(prompt.slice(lastIndex, start));
+      }
+
+      parts.push(
+        <span key={start} className="underline">
+          {group}
+        </span>
+      );
+
+      lastIndex = start + fullMatch.length;
+    }
+
+    if (lastIndex < prompt.length) {
+      parts.push(prompt.slice(lastIndex));
+    }
+
+    return parts;
+  }
+
   return (
     <DashboardWrapper>
       <div className="w-full max-w-3xl mx-auto font-Inter p-5 pt-25">
@@ -279,7 +309,9 @@ const English = () => {
                       className="mt-2 max-w-full h-auto rounded-md border"
                     />
                   ) : (
-                    <span>{questions[currentQuestionIndex].prompt}</span>
+                    <span>
+                      {renderPrompt(questions[currentQuestionIndex].prompt)}
+                    </span>
                   )}
                 </div>
 
