@@ -5,6 +5,7 @@ import { ScaleLoader } from "react-spinners";
 import Pagination from "./pagination";
 
 type Student = {
+  _id: string;
   username: string;
   password: string;
 };
@@ -34,6 +35,30 @@ const LoginDetails = () => {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(
+        `https://oxfords-waec-cbt-backend.onrender.com/api/v1/auth/deleteStudent/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to delete student.");
+      }
+
+      setStudents((prev) => prev.filter((student) => student._id !== id));
+      setTotalItems(totalItems && totalItems - 1);
+      toast.success("Student deleted successfully.");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete student.");
     }
   };
 
@@ -80,10 +105,26 @@ const LoginDetails = () => {
                     <strong>Password:</strong> {student.password}
                   </p>
                   <button
-                    onClick={() => handleCopy(student.username, student.password)}
-                    className="text-sm bg-gray-200 px-2 py-1 rounded hover:bg-gray-300 transition absolute top-2 right-2"
+                    onClick={() =>
+                      handleCopy(student.username, student.password)
+                    }
+                    className="text-sm bg-gray-200 px-2 py-1 rounded hover:bg-gray-300 transition absolute top-2 right-2 cursor-pointer"
                   >
                     Copy
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (
+                        confirm(
+                          "Are you sure you want to delete this pair of login details?"
+                        )
+                      ) {
+                        handleDelete(student._id);
+                      }
+                    }}
+                    className="text-sm bg-red-200 text-red-700 px-2 py-1 rounded hover:bg-red-300 transition absolute bottom-2 right-2 cursor-pointer"
+                  >
+                    Delete
                   </button>
                 </div>
               ))}

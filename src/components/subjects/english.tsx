@@ -223,7 +223,7 @@ const English = () => {
 
   return (
     <DashboardWrapper>
-      <div className="w-full max-w-3xl mx-auto font-Inter p-5 pt-25">
+      <div className="w-full max-w-6xl mx-auto font-Inter p-5 pt-25">
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-2xl font-bold">English Language Test</h1>
           <h1 className="text-2xl font-bold">Test Type: {testType}</h1>
@@ -421,7 +421,7 @@ const English = () => {
                 }}
               />
               <h2 className="text-3xl font-bold text-green-600 mb-4">
-                🎉 Test Completed!
+                🎉 Test Submitted!
               </h2>
               <button
                 className="mt-6 px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-800 cursor-pointer"
