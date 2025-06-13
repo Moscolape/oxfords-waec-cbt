@@ -5,6 +5,7 @@ import confettiAnimation from "../../utils/Animation - 1744283286259.json";
 import { ScaleLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { StopCircle } from "lucide-react";
 
 const QUIZ_DURATION = 60 * 60 * 1000;
 
@@ -30,6 +31,7 @@ const English = () => {
     JSON.parse(localStorage.getItem("englishHasSubmitted") || "false")
   );
   const [error, setError] = useState("");
+  const [showEndTestModal, setShowEndTestModal] = useState(false);
 
   const name = localStorage.getItem("candidateName");
   const subject = localStorage.getItem("selectedSubject");
@@ -178,6 +180,17 @@ const English = () => {
       .padStart(2, "0")}`;
   };
 
+  const clearMathQuizData = () => {
+    localStorage.removeItem("englishQuizAnswers");
+    localStorage.removeItem("englishHasSubmitted");
+    localStorage.removeItem("englishQuizStartTime");
+  };
+
+  const handleEndTest = () => {
+    clearMathQuizData();
+    navigate("/take-test");
+  };
+
   return (
     <DashboardWrapper>
       <div className="w-full max-w-3xl mx-auto font-Inter p-5 pt-25">
@@ -185,10 +198,55 @@ const English = () => {
           <h1 className="text-2xl font-bold">English Language Test</h1>
           <h1 className="text-2xl font-bold">Test Type: {testType}</h1>
         </div>{" "}
-        <p className="text-xl mb-2">
-          ⏳ Time Left -{" "}
-          <span className="font-bold">{formatTime(quizTimeLeft)}</span>
-        </p>
+        <div className="flex justify-between items-center mb-5">
+          <p className="text-xl mb-2">
+            ⏳ Time Left -{" "}
+            <span className="font-bold">{formatTime(quizTimeLeft)}</span>
+          </p>
+          <button
+            onClick={() => setShowEndTestModal(true)}
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition flex items-center cursor-pointer"
+          >
+            <StopCircle size={28} style={{ paddingRight: 5 }} />
+            End Test
+          </button>
+        </div>
+        {showEndTestModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#000000cb]">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-xl animate-fadeDownFast font-Montserrat">
+              <h2 className="text-lg font-semibold mb-4">End Test?</h2>
+              <p className="mb-4">
+                Are you sure you want to end the test? You won't be able to
+                change your answers afterward.
+              </p>
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={() => handleEndTest()}
+                  className="text-white bg-gray-900 px-4 py-2 rounded hover:bg-gray-700 cursor-pointer"
+                >
+                  Go Home
+                </button>
+                <div className="flex justify-end gap-4">
+                  <button
+                    onClick={() => setShowEndTestModal(false)}
+                    className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+                  >
+                    No, Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowEndTestModal(false);
+                      handleSubmit();
+                    }}
+                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer"
+                  >
+                    Yes, Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {loading ? (
           <div className="flex justify-center items-center min-h-[400px]">
             <ScaleLoader

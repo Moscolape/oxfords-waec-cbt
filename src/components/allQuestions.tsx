@@ -17,8 +17,8 @@ interface Question {
 }
 
 const subjects = [
-  "mathematics",
   "english",
+  "mathematics",
   "biology",
   "chemistry",
   "physics",
@@ -35,7 +35,7 @@ const AllQuestions = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedSubject, setSelectedSubject] = useState("mathematics");
+  const [selectedSubject, setSelectedSubject] = useState("english");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState<number | null>(null);
   const itemsPerPage = 50;
@@ -122,7 +122,7 @@ const AllQuestions = () => {
                     className="rounded-2xl p-5 shadow-sm bg-white"
                   >
                     {q.promptType === "text" ? (
-                      <p className="text-lg font-medium mb-2">
+                      <p className="text-lg font-medium mb-4">
                         {(currentPage - 1) * itemsPerPage + index + 1}.{" "}
                         {q.prompt}
                       </p>
@@ -134,22 +134,29 @@ const AllQuestions = () => {
                         <img
                           src={q.prompt}
                           alt="Question"
-                          className="w-[90%] mb-2"
+                          className="w-[90%] mb-4"
                         />
                       </div>
                     )}
 
-                    <div className="mb-2">
-                      <p className="font-medium">Options:</p>
-                      <ul className="list-disc list-inside ml-4 text-sm text-gray-700">
-                        {q.options.map((opt, idx) => (
-                          <li key={idx}>{opt}</li>
-                        ))}
+                    <div className="mb-4">
+                      <ul className="list-inside text-sm text-gray-700 space-y-1">
+                        {q.options.map((opt, idx) => {
+                          const optionLabels = ["A", "B", "C", "D"];
+                          return (
+                            <li key={idx}>
+                              <span className="font-semibold">
+                                {optionLabels[idx]}.
+                              </span>{" "}
+                              {opt}
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
 
-                    <p className="text-sm text-green-600">
-                      <span className="font-semibold">Correct Answer:</span>{" "}
+                    <p className="text-sm font-semibold">
+                      <span className="font-medium text-green-600">Correct Answer:</span>{" "}
                       {q.correctAnswer}
                     </p>
                     <p className="text-sm text-blue-600">
@@ -159,7 +166,9 @@ const AllQuestions = () => {
                 ))}
               </div>
             ) : (
-              <span className="text-red-500 flex justify-center items-center min-h-[400px] text-xl">No questions!</span>
+              <span className="text-red-500 flex justify-center items-center min-h-[400px] text-xl">
+                No questions!
+              </span>
             )}
 
             {questions.length !== 0 && (

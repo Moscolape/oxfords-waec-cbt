@@ -20,7 +20,7 @@ interface SignUpData {
 }
 
 const AdminPanel = () => {
-  const [selectedSubject, setSelectedSubject] = useState("mathematics");
+  const [selectedSubject, setSelectedSubject] = useState("english");
   const [questionType, setQuestionType] = useState<"text" | "image">("text");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -185,7 +185,7 @@ const AdminPanel = () => {
             <button
               className={`text-left px-4 py-2 rounded cursor-pointer text-[#dc117b] font-semibold`}
             >
-              Create User
+              Create Users
             </button>
           )}
         </div>

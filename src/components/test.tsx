@@ -48,7 +48,7 @@ const Test = () => {
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
           >
-            <option value="">Select a subject</option>
+            {/* <option value="">Select a subject</option> */}
             <option value="english">English</option>
             <option value="mathematics">Mathematics</option>
             <option value="biology">Biology</option>

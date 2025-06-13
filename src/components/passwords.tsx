@@ -67,7 +67,7 @@ const LoginDetails = () => {
           <p>No student login details found.</p>
         ) : (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 text-bounce">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-bounce">
               {students.map((student, index) => (
                 <div
                   key={index}
