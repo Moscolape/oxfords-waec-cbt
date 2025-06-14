@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/protectedRoutes";
 import initializeAOS from "./utils/aos-init";
 import { HashLoader } from "react-spinners";
+import MobileWarning from "./components/mobile-blocker";
 
 const Login = lazy(() => import("./pages/login"));
 
@@ -35,6 +36,12 @@ function App() {
   useEffect(() => {
     initializeAOS();
   }, []);
+
+  const isMobileDevice = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+
+  if (isMobileDevice) {
+    return <MobileWarning />;
+  }
 
   return (
     <Suspense

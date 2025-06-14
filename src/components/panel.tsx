@@ -20,7 +20,7 @@ interface SignUpData {
 }
 
 const AdminPanel = () => {
-  const [selectedSubject, setSelectedSubject] = useState("biology");
+  const [selectedSubject, setSelectedSubject] = useState("economics");
   const [questionType, setQuestionType] = useState<"text" | "image">("text");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
