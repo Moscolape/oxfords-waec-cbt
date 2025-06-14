@@ -20,7 +20,7 @@ interface SignUpData {
 }
 
 const AdminPanel = () => {
-  const [selectedSubject, setSelectedSubject] = useState("english");
+  const [selectedSubject, setSelectedSubject] = useState("biology");
   const [questionType, setQuestionType] = useState<"text" | "image">("text");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -307,6 +307,7 @@ const AdminPanel = () => {
                     value={form.points}
                     onChange={handleChange}
                     className="w-full border p-2 mb-4"
+                    disabled
                   />
                 </div>
                 <div className="sm:col-span-2 flex justify-center mt-4">

@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/protectedRoutes";
 import initializeAOS from "./utils/aos-init";
+import { HashLoader } from "react-spinners";
 
 const Login = lazy(() => import("./pages/login"));
 
@@ -39,7 +40,11 @@ function App() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center h-screen">
-          <div className="w-8 h-8 border-4 border-[#14346f] border-t-transparent rounded-full animate-spin"></div>
+          <HashLoader
+            color="#dc117b"
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />{" "}
         </div>
       }
     >

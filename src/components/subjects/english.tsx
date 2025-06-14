@@ -343,29 +343,38 @@ const English = () => {
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 gap-2">
-                    {questions[currentQuestionIndex].options.map((option) => {
-                      const isSelected =
-                        answers[questions[currentQuestionIndex]._id] === option;
-                      return (
-                        <button
-                          key={option}
-                          disabled={hasSubmitted || submitting}
-                          onClick={() =>
-                            handleSelect(
-                              questions[currentQuestionIndex]._id,
-                              option
-                            )
-                          }
-                          className={`p-2 border rounded ${
-                            isSelected
-                              ? "bg-[#dc117b] text-white"
-                              : "hover:bg-gray-100"
-                          }`}
-                        >
-                          {option}
-                        </button>
-                      );
-                    })}
+                    {questions[currentQuestionIndex]?.options.map(
+                      (option, index) => {
+                        const isSelected =
+                          answers[questions[currentQuestionIndex]._id] ===
+                          option;
+
+                        const optionLabels = ["A", "B", "C", "D"];
+
+                        return (
+                          <button
+                            key={option}
+                            disabled={hasSubmitted || submitting}
+                            onClick={() =>
+                              handleSelect(
+                                questions[currentQuestionIndex]._id,
+                                option
+                              )
+                            }
+                            className={`flex items-center gap-2 w-full text-left p-2 border rounded ${
+                              isSelected
+                                ? "bg-[#dc117b] text-white"
+                                : "hover:bg-gray-100"
+                            }`}
+                          >
+                            <span className="font-bold">
+                              {optionLabels[index]}.
+                            </span>
+                            <span>{option}</span>
+                          </button>
+                        );
+                      }
+                    )}
                   </div>
                 )}
               </div>
